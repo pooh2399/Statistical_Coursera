@@ -21,8 +21,8 @@ exp = 40
 
 Run Simulations with variables
 ```{r}
-simMeans = NULL
-for (i in 1 : 1000) simMeans = c(simMeans, mean(rexp(exp, l)))
+mean_simu = NULL
+for (i in 1 : 1000) mean_simu = c(mean_simu, mean(rexp(exp, l)))
 ```
 
 
@@ -30,7 +30,7 @@ for (i in 1 : 1000) simMeans = c(simMeans, mean(rexp(exp, l)))
 #### Sample Mean
 Calculating the mean.
 ```{r}
-mean(simMeans)
+mean(mean_simu)
 ```
 
 #### Theoretical Mean
@@ -42,7 +42,7 @@ l^-1
 #### Comparison
 Sample mean and exp distribution mean only have samll difference
 ```{r}
-abs(mean(simMeans)-l^-1)
+abs(mean(mean_simu)-l^-1)
 ```
 
 
@@ -51,7 +51,7 @@ abs(mean(simMeans)-l^-1)
 Calculating the variance from the simulation means will give the sample
 variance.
 ```{r}
-var(simMeans)
+var(mean_simu)
 ```
 
 #### Theoretical Variance
@@ -64,7 +64,7 @@ The theoretical variance of an exponential distribution is
 #### Comparison
 Similar to their means , both variance only have small diferences between then
 ```{r}
-abs(var(simMeans)-(l * sqrt(exp))^-2)
+abs(var(mean_simu)-(l * sqrt(exp))^-2)
 ```
 
 
@@ -74,7 +74,7 @@ normal distribution that has a mean of l^-1 and standard deviation of
 (l*sqrt(n))^-1, the theoretical normal distribution for the simulations.
 ```{r}
 library(ggplot2)
-ggplot(data.frame(y=simMeans), aes(x=y)) + 
+ggplot(data.frame(y=mean_simu), aes(x=y)) + 
   geom_histogram(aes(y=..density..), binwidth=0.2, fill="#0072B2", 
                  color="black") +
   stat_function(fun=dnorm, arg=list(mean=l^-1, 
