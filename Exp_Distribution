@@ -1,0 +1,84 @@
+---
+title: exponential distribution in R with respect to the CLT Theorm
+author: "P V Vineet"
+date: "22/10/2020"
+output: html_document
+---
+
+## Overview
+Aim of this analysis is to compare the exponential distribution to the CLT theorem.
+In this analysis , the lamda value will be set to 2.0 for all cases.
+An average of 40 exp over 1000 simulations wil be done
+
+## Simulations
+Setting values to lambda, exp, and seed.
+```{r}
+ECHO=TRUE
+set.seed(1337)
+l = 0.2
+exp = 40
+```
+
+Run Simulations with variables
+```{r}
+simMeans = NULL
+for (i in 1 : 1000) simMeans = c(simMeans, mean(rexp(exp, l)))
+```
+
+
+## Sample Mean versus Theoretical Mean
+#### Sample Mean
+Calculating the mean.
+```{r}
+mean(simMeans)
+```
+
+#### Theoretical Mean
+The theoretical mean of an exponential distribution is l raised to the power -1.
+```{r}
+l^-1
+```
+
+#### Comparison
+Sample mean and exp distribution mean only have samll difference
+```{r}
+abs(mean(simMeans)-l^-1)
+```
+
+
+## Sample Variance Vs Theoretical Variance
+#### Sample Variance
+Calculating the variance from the simulation means will give the sample
+variance.
+```{r}
+var(simMeans)
+```
+
+#### Theoretical Variance
+The theoretical variance of an exponential distribution is 
+(l * sqrt(n))^-2.
+```{r}
+(l * sqrt(exp))^-2
+```
+
+#### Comparison
+Similar to their means , both variance only have small diferences between then
+```{r}
+abs(var(simMeans)-(l * sqrt(exp))^-2)
+```
+
+
+## Distribution
+This is a density histogram of the 1000 simulations. There is an overlay with a 
+normal distribution that has a mean of l^-1 and standard deviation of 
+(l*sqrt(n))^-1, the theoretical normal distribution for the simulations.
+```{r}
+library(ggplot2)
+ggplot(data.frame(y=simMeans), aes(x=y)) + 
+  geom_histogram(aes(y=..density..), binwidth=0.2, fill="#0072B2", 
+                 color="black") +
+  stat_function(fun=dnorm, arg=list(mean=l^-1, 
+                                    sd=(l*sqrt(exp))^-1), 
+                size=2) +
+  labs(title="Plot of the Simulations", x="Simulation Mean")
+```
